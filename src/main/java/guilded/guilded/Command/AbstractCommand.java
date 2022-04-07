@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implements abstract CoinMaterial command ... Usage: none, abstract
- * Usage: Extending this class
+ * Implements abstract Guilded command
+ * Usage:        Extending this class
+ * Requirements: none
  */
 public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     public AbstractCommand(String command) {
@@ -47,7 +48,7 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
             return null;
 
         String last = args[args.length - 1];
-        List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<String>();
 
         for (String arg : list) {
             if (arg.toLowerCase().startsWith(last.toLowerCase()))
@@ -58,20 +59,28 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     }
 
     public boolean isNumber(String str) {
-        // isNumber support method - tests if provided str contains number
-        if (str == null || str.isEmpty())
-            return false;
+		// isNumber support method - tests if provided str contains number
+		if (str != null && !str.isEmpty()) {
+			for (int i = 0; i < str.length(); i++) {
+				if (!Character.isDigit(str.charAt(i))) return false;
+			}
+			return true;
+		}
+		return true;
+	}
 
-        for (int i = 0; i < str.length(); i++) {
-            if (!Character.isDigit(str.charAt(i)))
-                return false;
-        }
-
-        return true;
-    }
-
-    public String readConfig(String ns, String key) {
-        // readConfig method - reads value from config for given namespace and key pair
-        return Guilded.getInstance().getConfig().getString(ns + "." + key);
-    }
+    private String readConfig(String ns, String key) {
+		// readConfig method - reads value from config for given namespace and key pair 
+		return Guilded.getInstance().getConfig().getString(ns + "." + key);
+	}
+	
+	public String getLocal(String commandNS, String localize) {
+		// getLocal method - returns localized string from config.yml under 'localization' namespace
+		return readConfig("localization", commandNS + "." + localize);
+	}
+	
+	public String getSettings(String settingsType, String settingName) {
+		// getSettings method - returns settings values from config.yml under 'settings' namespace
+		return readConfig("settings", settingsType + "." + settingName);
+	}
 }
