@@ -1,18 +1,19 @@
 package guilded.guilded.GuildedSerialized;
 
 import com.google.gson.Gson;
-import guilded.guilded.GuildModule;
+import com.google.gson.GsonBuilder;
+import guilded.guilded.GuildModel;
 
 import java.io.*;
 import java.util.HashMap;
 
-public class Serialized {
+public class GuildSerializer {
      public enum RoleGuid{
-        Creator,Opped,Added,Requested,Left,Exiled
+        Creator,Opped,Member,Requested,Left,Exiled
      };
     static final String filePath="plugins/DWdatabases/Guilded.json";
-    public static HashMap<String, GuildModule> listGuided = new HashMap<>();
-    static Gson gson =new Gson();
+    public static HashMap<String, GuildModel> listGuided = new HashMap<>();
+    static Gson gson =new GsonBuilder().setPrettyPrinting().create();
     public static boolean playerExists(String name) {
         // playerExists method - return true if player with given name is found in
         // playerCoin HashMap
@@ -61,7 +62,7 @@ public class Serialized {
 
         HashMap<String, RoleGuid> roleGuild=new HashMap<>();
         roleGuild.put(playerName,RoleGuid.Creator);
-        Serialized.listGuided.put(playerName, new GuildModule(nameGuild,prefixGuild,colorGuild,3,roleGuild));
+        GuildSerializer.listGuided.put(playerName, new GuildModel(nameGuild,prefixGuild,colorGuild,3,roleGuild));
         SaveGuild();
     }
 }

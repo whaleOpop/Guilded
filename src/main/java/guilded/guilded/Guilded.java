@@ -2,7 +2,7 @@ package guilded.guilded;
 
 
 import guilded.guilded.Command.GuildNewCommand;
-import guilded.guilded.GuildedSerialized.Serialized;
+import guilded.guilded.GuildedSerialized.GuildSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,7 +14,7 @@ public final class Guilded extends JavaPlugin {
         // Plugin startup logic
         instance = this;
 
-        Serialized.LoadGuild();
+        GuildSerializer.LoadGuild();
 
         new GuildNewCommand();
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
