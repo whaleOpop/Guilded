@@ -1,0 +1,6 @@
+name: Guilded
+version: ${project.version}
+main: guilded.guilded.Guilded
+api-version: 1.13
+
+
