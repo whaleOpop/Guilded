@@ -6,8 +6,6 @@ import guilded.guilded.GuildedSerialized.Serialized;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-
 
 public final class Guilded extends JavaPlugin {
     private static Guilded instance;
@@ -17,6 +15,7 @@ public final class Guilded extends JavaPlugin {
         instance = this;
 
         Serialized.LoadGuild();
+
         new GuildNewCommand();
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
     }
