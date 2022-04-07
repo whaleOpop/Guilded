@@ -2,5 +2,8 @@ name: Guilded
 version: ${project.version}
 main: guilded.guilded.Guilded
 api-version: 1.13
-
+commands:
+  guild:
+    description: Создание гильдии
+    usage: /guild help
 

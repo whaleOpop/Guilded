@@ -1,9 +1,12 @@
 package guilded.guilded;
 
 
+import guilded.guilded.Command.GuildNewCommand;
+import guilded.guilded.GuildedSerialized.Serialized;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
 
 
 public final class Guilded extends JavaPlugin {
@@ -13,8 +16,13 @@ public final class Guilded extends JavaPlugin {
         // Plugin startup logic
         instance = this;
 
+        Serialized.LoadGuild();
+        new GuildNewCommand();
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
     }
+
+
+
     public static Guilded getInstance() {
         // Simple Singleton implementation
         return instance;
