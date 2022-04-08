@@ -19,13 +19,19 @@ import java.util.function.BiFunction;
  */
 public class CoinSerializer {
 
+	
+	static final String guildPrefix = "!guild_";
 	static final String filePath = "plugins/DWdatabases/Coin.json";
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static HashMap<String, Double> playerCoin = new HashMap<>();
 
-    public static boolean walletExists(String name) {
-        // walletExists method - return true if player with given name is found in
+    
+    public static boolean walletExists(String name, Boolean isGuild) {
+        // walletExists method - return true if player/guild with given name is found in
         // playerCoin HashMap as key
+
+    	if (isGuild == null) isGuild = false;
+    	if (isGuild) return playerCoin.get(guildPrefix + name) != null;
         return playerCoin.get(name) != null;
     }
     
@@ -34,7 +40,7 @@ public class CoinSerializer {
     	List<String> ls = Lists.newArrayList();
     	for(String name : playerCoin.keySet()) {
     		// Get all players - exclude all guild wallets (Guilded Integration)
-    		if (!name.startsWith("!guild_")) {
+    		if (!name.startsWith(guildPrefix)) {
     			ls.add(name);
     		}
     	}
@@ -46,8 +52,8 @@ public class CoinSerializer {
         // getGuildCoin method - handles getting wallet value of guilds, if guild with
         // given name doesn`t have a wallet - create one with 0 coins
     	// Part of Guilded Integration
-    	String guild = "!guild_" + name;
-        if (walletExists(guild)) {
+    	String guild = guildPrefix + name;
+        if (walletExists(guild, true)) {
             return playerCoin.get(guild);
         } else {
             playerCoin.put(guild, 0.0);
@@ -58,7 +64,7 @@ public class CoinSerializer {
     public static Double getPlayerCoin(String name) {
         // getPlayerCoin method - handles getting wallet value of Player, if Player with
         // given name doesn`t have a wallet - create one with 0 coins
-        if (walletExists(name)) {
+        if (walletExists(name, false)) {
             return playerCoin.get(name);
         } else {
             playerCoin.put(name, 0.0);
@@ -72,8 +78,8 @@ public class CoinSerializer {
     	// Guild method
     	
     	// Call getPlayerCoin in case somehow player does not have a wallet
-    	CoinSerializer.getPlayerCoin(name);
-    	CoinSerializer.playerCoin.put(name, CoinSerializer.playerCoin.merge(name, amount, bFunc));
+    	CoinSerializer.getGuildCoin(name);
+    	CoinSerializer.playerCoin.put(guildPrefix + name, CoinSerializer.playerCoin.merge(guildPrefix + name, amount, bFunc));
     }
     
     public static void performCoinOperation(String name, Double amount, BiFunction<Double, Double, Double> bFunc) {

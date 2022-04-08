@@ -29,7 +29,7 @@ public class GuildNewCommand {
 				if (args.length >= 4) {
 					// Color provided
 					
-					if (!GuildSerializer.guildExists(sender.getName())) {
+					if (!GuildSerializer.guildExistsByCreator(sender.getName())) {
 						// Player is not creator of any other guild
 						
 						// TODO: test for player in any guild and any role
@@ -52,13 +52,13 @@ public class GuildNewCommand {
 
 		// If no arguments - list possible modify attributes
 		if (args.length == 2)
-			return Lists.newArrayList("<guildName>");
+			return Lists.newArrayList("<name>");
 
 		if (args.length == 3)
-			return Lists.newArrayList("<guildPrefix>");
+			return Lists.newArrayList("<prefix>");
 
 		if (args.length == 4)
-			return Lists.newArrayList("<guildColor>");
+			return Lists.newArrayList("<color>");
 
 		return Lists.newArrayList();
 	}

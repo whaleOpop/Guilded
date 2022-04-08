@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.google.common.collect.Lists;
 
+import guilded.guilded.GuildModel;
 import guilded.guilded.GuildSerializer.GuildSerializer;
 
 /**
@@ -23,13 +24,21 @@ public class GuildDeleteCommand {
 			if (args[1].equals("confirm")) {
 				// An argument is keyword confirm
 				
-				if (GuildSerializer.guildExists(sender.getName())) {
-					// Test if player is in a guild
+				String playerName = sender.getName();
+				GuildModel gm = GuildSerializer.getGuildByPlayername(playerName);
+				
+				if (gm != null) {
+					// Player is a member of the guild
 					
-					// TODO: test player's role
-					GuildSerializer.listGuild.remove(sender.getName());
-					GuildSerializer.SaveGuild();
-					sender.sendMessage("Гильдия успешно удалена");
+					if (gm.testOwnership(playerName)) {
+						// Test if player is the guild's creator
+						
+						// TODO: message player about guild's debt, 
+						GuildSerializer.deleteGuild(playerName);
+						sender.sendMessage(gm.nameGuild);
+						sender.sendMessage("Гильдия была распущена");
+					} else
+						sender.sendMessage("Недостаточно прав - вы не являетесь главой гильдии");
 				} else
 					sender.sendMessage("Вы не состоите в гильдии");
 			} else
@@ -41,8 +50,11 @@ public class GuildDeleteCommand {
 	public static List<String> complete(CommandSender sender, String[] args) {
 		// complete method - returns a list of all available commands to sender
 		
-		// TODO: implement
-		
+		// Test if sender is a guild owner
+		if (args.length >= 2)
+			if (GuildSerializer.guildExistsByCreator(sender.getName()))
+				return Lists.newArrayList("confirm");
+			
 		return Lists.newArrayList();
 	}
 }

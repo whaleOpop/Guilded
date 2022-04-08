@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.google.common.collect.Lists;
 
+import guilded.guilded.GuildModel;
 import guilded.guilded.GuildSerializer.GuildSerializer;
 
 /**
@@ -20,22 +21,62 @@ public class GuildModifyCommand {
 		// TODO: splice modifiable attributes
 		
 		if (args.length >= 2) {
-			if (args.length >= 3) {
-				if (args.length >= 4) {
-					if (GuildSerializer.guildExists(sender.getName())) {
+			// Player specified guild attribute to change
+			
+			String playerName = sender.getName();
+			GuildModel gm = GuildSerializer.getGuildByPlayername(playerName);
+			
+			if (gm != null) {
+				// Guild exists/player is in a guild
+				
+				if (gm.testOperatorship(playerName)) {
+					// Player is an operator/creator of the guild
+					
+					if (args[1].equalsIgnoreCase("name")) {
+						// Modify name
 						
-						// TODO: test for player's role in guild
-						GuildSerializer.addGuild(sender.getName(), args[1], args[2], args[3]);
-						GuildSerializer.SaveGuild();
-						sender.sendMessage("Изменения сохранены");
+						if (args.length >= 3) {
+							// Player specified new name for a guild
+							
+							GuildSerializer.modifyGuild(playerName, args[2], null, null);
+							
+						} else
+							sender.sendMessage("Укажите новое название для гильдии");
+						
+					} else if (args[1].equalsIgnoreCase("prefix")) {
+						// Modify prefix
+						
+						if (args.length >= 3) {
+							// Player specified new prefix for a guild
+							
+							GuildSerializer.modifyGuild(playerName, null, "[" + args[2] + "]", null);
+						} else
+							sender.sendMessage("Укажите новый префикс для гильдии");
+						
+					} else if (args[1].equalsIgnoreCase("color")) {
+						// Modify color
+						
+						if (args.length >= 3) {
+							// Player specified new color for a guild
+							
+							// TODO: test for color type
+							
+							GuildSerializer.modifyGuild(playerName, null, null, args[2]);
+							
+						} else
+							sender.sendMessage("Укажите новый цвет для гильдии");
+						
 					} else
-						sender.sendMessage("Вы не состоите в гильдии");
+						sender.sendMessage("Пожалуйста, укажите какой атрибут гильдии нужно отредактировать: name/prefix/color");
+					
+					
 				} else
-					sender.sendMessage("Введите новый цвет");
+					sender.sendMessage("Недостаточно прав - вы не глава или оператор гильдии");
+				
 			} else
-				sender.sendMessage("Введите новый префикс");
+				sender.sendMessage("Вы не состоите в гильдии");
 		} else
-			sender.sendMessage("Введите новое название");
+			sender.sendMessage("Пожалуйста, укажите какой атрибут гильдии нужно отредактировать: name/prefix/color");
 	}
 	
 	public static List<String> complete(CommandSender sender, String[] args) {
