@@ -30,22 +30,22 @@ public class GuildCommand extends AbstractCommand {
 		if (args[0].equals("help")) {
 			// Also a guild help command
 			// Pass whole args array
-			GuildHelpCommand.execute(sender, Arrays.copyOfRange(args, 1, args.length));
+			GuildHelpCommand.execute(sender, args);
 			return;
 			
 		}else if (args[0].equals("new")) {
 			// Guild new command execute
-			GuildNewCommand.execute(sender, Arrays.copyOfRange(args, 1, args.length));
+			GuildNewCommand.execute(sender, args);
 			return;
 			
 		} else if (args[0].equals("delete")) {
 			// Guild delete command execute
-			GuildDeleteCommand.execute(sender, Arrays.copyOfRange(args, 1, args.length));
+			GuildDeleteCommand.execute(sender, args);
 			return;
 
 		} else if (args[0].equals("modify")) {
 			// Guild modify command execute
-			GuildModifyCommand.execute(sender, Arrays.copyOfRange(args, 1, args.length));
+			GuildModifyCommand.execute(sender,args);
 			return;
 
 		} else {
@@ -58,8 +58,8 @@ public class GuildCommand extends AbstractCommand {
 		// Overridden complete method - returns reload as only available command
 
 		// guild [subcommand] - presumably empty or help
-		if (args.length == 0)
-			GuildHelpCommand.complete(sender, args);
+		if (args.length == 1)
+			return GuildHelpCommand.complete(sender, args);
 		if (args[0].equalsIgnoreCase("help"))
 			return Lists.newArrayList();
 		
@@ -67,11 +67,12 @@ public class GuildCommand extends AbstractCommand {
 		if (args.length > 0) {
 			// Complete /guild new command
 			if (args[0].equalsIgnoreCase("new"))
-				return GuildNewCommand.complete(sender, Arrays.copyOfRange(args, 1, args.length));
+				return GuildNewCommand.complete(sender, args);
 
 			// Complete /guild modify command
 			if (args[0].equalsIgnoreCase("modify"))
-				return GuildModifyCommand.complete(sender, Arrays.copyOfRange(args, 1, args.length));
+				return GuildModifyCommand.complete(sender,args);
+
 		}
 
 		return Lists.newArrayList();

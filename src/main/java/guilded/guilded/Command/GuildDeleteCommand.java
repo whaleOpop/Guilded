@@ -17,10 +17,10 @@ public class GuildDeleteCommand {
 	public static void execute(CommandSender sender, String[] args) {
 		// execute method - handles plugin delete command
 		
-		if (args.length == 1) {
+		if (args.length >= 2) {
 			// Player provided an argument after /guild delete
 			
-			if (args[0].equals("confirm")) {
+			if (args[1].equals("confirm")) {
 				// An argument is keyword confirm
 				
 				if (GuildSerializer.guildExists(sender.getName())) {

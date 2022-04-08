@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
 public class GuildHelpCommand {
 	public static void execute(CommandSender sender, String[] args) {
 		// execute method - handles plugin help command
-		
+
 		// TODO: code help to show all of the commands
 		// TODO: code help for the requested command
 	}
@@ -23,8 +23,6 @@ public class GuildHelpCommand {
 		// complete method - returns a list of all available commands to sender
 		// TODO: test if sender is in a guild
 		// if so, test sender's role
-		if (args.length == 0)
-			return Lists.newArrayList("new", "delete", "modify", "request", "add", "exile", "leave", "op", "deop", "role", "list", "info", "help");
-		return Lists.newArrayList();
+		return Lists.newArrayList("new", "delete", "modify", "request", "add", "exile", "leave", "op", "deop", "role", "list", "info", "help");
 	}
 }

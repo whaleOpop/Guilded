@@ -16,16 +16,16 @@ import guilded.guilded.GuildSerializer.GuildSerializer;
 public class GuildModifyCommand {
 	public static void execute(CommandSender sender, String[] args) {
 		// execute method - handles plugin modify command
-		
+
 		// TODO: splice modifiable attributes
 		
-		if (args.length >= 1) {
-			if (args.length >= 2) {
-				if (args.length >= 3) {
+		if (args.length >= 2) {
+			if (args.length >= 3) {
+				if (args.length >= 4) {
 					if (GuildSerializer.guildExists(sender.getName())) {
 						
 						// TODO: test for player's role in guild
-						GuildSerializer.addGuild(sender.getName(), args[0], args[1], args[2]);
+						GuildSerializer.addGuild(sender.getName(), args[1], args[2], args[3]);
 						GuildSerializer.SaveGuild();
 						sender.sendMessage("Изменения сохранены");
 					} else
@@ -40,21 +40,21 @@ public class GuildModifyCommand {
 	
 	public static List<String> complete(CommandSender sender, String[] args) {
 		// complete method - returns a list of all available commands to sender
-		
+
 		// If no arguments - list possible modify attributes
-		if (args.length == 0)
+		if (args.length == 2)
 			return Lists.newArrayList("name", "prefix", "color");
 		
 		// Suggest some help to player
-		if (args.length > 0) {
-			if(args[0].equalsIgnoreCase("name"))
-				return Lists.newArrayList("<new guild name>");
+		if (args.length > 2) {
+			if(args[1].equalsIgnoreCase("name"))
+				return Lists.newArrayList("<newGuildName>");
 			
-			if(args[0].equalsIgnoreCase("prefix"))
-				return Lists.newArrayList("<new guild prefix>");
+			if(args[1].equalsIgnoreCase("prefix"))
+				return Lists.newArrayList("<newGuildPrefix>");
 			
-			if(args[0].equalsIgnoreCase("color"))
-				return Lists.newArrayList("<new guild color>");
+			if(args[1].equalsIgnoreCase("color"))
+				return Lists.newArrayList("<newGuildColor>");
 		}
 		
 		return Lists.newArrayList();

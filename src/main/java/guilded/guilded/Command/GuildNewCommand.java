@@ -2,6 +2,7 @@ package guilded.guilded.Command;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.google.common.collect.Lists;
@@ -18,14 +19,14 @@ public class GuildNewCommand {
 		// execute method - handles plugin new command
 		
 		// TODO: link with Mojang provided teams command set
-		
-		if (args.length >= 1) {
+
+		if (args.length >= 2) {
 			// Name provided
 			
-			if (args.length >= 2) {
+			if (args.length >= 3) {
 				// Prefix provided
 				
-				if (args.length >= 3) {
+				if (args.length >= 4) {
 					// Color provided
 					
 					if (!GuildSerializer.guildExists(sender.getName())) {
@@ -33,7 +34,8 @@ public class GuildNewCommand {
 						
 						// TODO: test for player in any guild and any role
 						
-						GuildSerializer.addGuild(sender.getName(), args[0], args[1], args[2]);
+						GuildSerializer.addGuild(sender.getName(), args[1], args[2], args[3]);
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "team");
 						sender.sendMessage("Гильдия создана");
 					} else
 						sender.sendMessage("Вы уже создали гильдию");
@@ -49,14 +51,14 @@ public class GuildNewCommand {
 		// complete method - returns a list of all available commands to sender
 
 		// If no arguments - list possible modify attributes
-		if (args.length == 0)
-			return Lists.newArrayList("<guild name>");
-
-		if (args.length == 1)
-			return Lists.newArrayList("<guild prefix>");
-
 		if (args.length == 2)
-			return Lists.newArrayList("<guild color>");
+			return Lists.newArrayList("<guildName>");
+
+		if (args.length == 3)
+			return Lists.newArrayList("<guildPrefix>");
+
+		if (args.length == 4)
+			return Lists.newArrayList("<guildColor>");
 
 		return Lists.newArrayList();
 	}

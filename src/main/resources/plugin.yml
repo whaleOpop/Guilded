@@ -1,10 +1,8 @@
 name: Guilded
 version: ${project.version}
-
 author: DoubleWhale https://github.com/whaleOpop/
 authors: [whaleOpop, TheBrushCoder]
 website: https://github.com/whaleOpop/Guilded
-
 main: guilded.guilded.Guilded
 api-version: 1.13
 commands:
