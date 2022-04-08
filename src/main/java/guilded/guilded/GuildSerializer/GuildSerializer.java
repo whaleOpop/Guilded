@@ -8,6 +8,10 @@ import guilded.guilded.GuildModel;
 import java.io.*;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.ConsoleCommandSender;
+
 /**
  * Implements Hashmapper to work with player guilds in .json files
  * Usage:        load/save HashMap of GuildModels
@@ -27,7 +31,6 @@ public class GuildSerializer {
 		return listGuild.get(creatorName) != null;
 	}
 	
-	
 	public static void addGuild(String creatorName, String nameGuild, String prefixGuild, String colorGuild) {
 		// addGuild method - adds a guild to the listGuild and saves all to .json
 		
@@ -37,6 +40,15 @@ public class GuildSerializer {
 		// Add command issuer as Creator, add guild to listGuild
 		roleGuild.put(creatorName, RoleGuild.Creator);
 		GuildSerializer.listGuild.put(creatorName, new GuildModel(nameGuild, prefixGuild, colorGuild, roleGuild));
+		
+		// Execute Minecraft:team commands
+		ConsoleCommandSender console = Bukkit.getConsoleSender();
+		Server server = Bukkit.getServer();
+		
+		server.dispatchCommand(console, "team add "    + creatorName + " {\"text\":\"" + nameGuild + "\"}");
+		server.dispatchCommand(console, "team modify " + creatorName + " prefix [{\"text\":\"[" + prefixGuild + "] \",\"color\":\"" + colorGuild + "\"}]");
+		server.dispatchCommand(console, "team modify " + creatorName + " displayName [{\"text\" : \"" + nameGuild + ",\"color\":\"" + colorGuild + "\"}]");
+		server.dispatchCommand(console, "team join "   + creatorName + " " + creatorName);
 		
 		// Save all guilds
 		SaveGuild();
@@ -61,15 +73,25 @@ public class GuildSerializer {
 		// Put to the list
 		listGuild.put(playerName, gm);
 		
+		// Execute Minecraft:team commands
+		ConsoleCommandSender console = Bukkit.getConsoleSender();
+		Server server = Bukkit.getServer();
+		
+		server.dispatchCommand(console, "team modify " + playerName + " prefix [{\"text\":\"[" + prefixGuild + "] \",\"color\":\"" + colorGuild + "\"}]");
+		server.dispatchCommand(console, "team modify " + playerName + " displayName [{\"text\" : \"" + nameGuild + ",\"color\":\"" + colorGuild + "\"}]");
+		
 		// Save all guilds
 		GuildSerializer.SaveGuild();
 	}
 	
 	public static void deleteGuild(String creatorName) {
 		// deleteGuild method - removes guild from listGuild with ownerName
-		GuildSerializer.listGuild.remove(creatorName);
 		
-		// TODO: CoinMaterial guild wallet remove
+		// Remove from listGuild and Minecraft:team
+		GuildSerializer.listGuild.remove(creatorName);
+		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "team remove " + creatorName);
+		
+		// TODO: Implement CoinMaterial guild wallet remove (CoinMaterial support)
 		
 		// Save guilds
 		GuildSerializer.SaveGuild();

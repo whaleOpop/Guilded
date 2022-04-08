@@ -39,7 +39,7 @@ public class GuildModifyCommand {
 							// Player specified new name for a guild
 							
 							GuildSerializer.modifyGuild(playerName, args[2], null, null);
-							
+							sender.sendMessage("Изменения сохранены");
 						} else
 							sender.sendMessage("Укажите новое название для гильдии");
 						
@@ -50,6 +50,7 @@ public class GuildModifyCommand {
 							// Player specified new prefix for a guild
 							
 							GuildSerializer.modifyGuild(playerName, null, "[" + args[2] + "]", null);
+							sender.sendMessage("Изменения сохранены");
 						} else
 							sender.sendMessage("Укажите новый префикс для гильдии");
 						
@@ -62,17 +63,13 @@ public class GuildModifyCommand {
 							// TODO: test for color type
 							
 							GuildSerializer.modifyGuild(playerName, null, null, args[2]);
-							
+							sender.sendMessage("Изменения сохранены");
 						} else
 							sender.sendMessage("Укажите новый цвет для гильдии");
-						
 					} else
 						sender.sendMessage("Пожалуйста, укажите какой атрибут гильдии нужно отредактировать: name/prefix/color");
-					
-					
 				} else
 					sender.sendMessage("Недостаточно прав - вы не глава или оператор гильдии");
-				
 			} else
 				sender.sendMessage("Вы не состоите в гильдии");
 		} else
@@ -89,13 +86,17 @@ public class GuildModifyCommand {
 		// Suggest some help to player
 		if (args.length > 2) {
 			if(args[1].equalsIgnoreCase("name"))
-				return Lists.newArrayList("<newGuildName>");
+				return Lists.newArrayList("<newName>");
 			
 			if(args[1].equalsIgnoreCase("prefix"))
-				return Lists.newArrayList("<newGuildPrefix>");
+				return Lists.newArrayList("<newPrefix>");
 			
 			if(args[1].equalsIgnoreCase("color"))
-				return Lists.newArrayList("<newGuildColor>");
+				return Lists.newArrayList("aqua", "black", "blue",
+						"dark_aqua", "dark_blue", "dark_gray",
+						"dark_green", "dark_purple", "dark_red",
+						"gold", "gray", "green", "light_purple",
+						"red", "white", "yellow");
 		}
 		
 		return Lists.newArrayList();

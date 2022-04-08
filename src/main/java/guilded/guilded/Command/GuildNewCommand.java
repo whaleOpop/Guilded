@@ -2,7 +2,6 @@ package guilded.guilded.Command;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.google.common.collect.Lists;
@@ -32,11 +31,9 @@ public class GuildNewCommand {
 					if (!GuildSerializer.guildExistsByCreator(sender.getName())) {
 						// Player is not creator of any other guild
 						
-						// TODO: test for player in any guild and any role
-						
 						GuildSerializer.addGuild(sender.getName(), args[1], args[2], args[3]);
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "team");
-						sender.sendMessage("Гильдия создана");
+
+						sender.sendMessage("Гильдия успешно создана");
 					} else
 						sender.sendMessage("Вы уже создали гильдию");
 				} else
@@ -57,8 +54,13 @@ public class GuildNewCommand {
 		if (args.length == 3)
 			return Lists.newArrayList("<prefix>");
 
+		// Namecoded colors
 		if (args.length == 4)
-			return Lists.newArrayList("<color>");
+			return Lists.newArrayList("aqua", "black", "blue",
+					"dark_aqua", "dark_blue", "dark_gray",
+					"dark_green", "dark_purple", "dark_red",
+					"gold", "gray", "green", "light_purple",
+					"red", "white", "yellow");
 
 		return Lists.newArrayList();
 	}
