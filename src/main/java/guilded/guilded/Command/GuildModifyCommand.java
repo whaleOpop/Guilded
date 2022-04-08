@@ -26,6 +26,7 @@ public class GuildModifyCommand {
 						
 						// TODO: test for player's role in guild
 						GuildSerializer.addGuild(sender.getName(), args[1], args[2], args[3]);
+
 						GuildSerializer.SaveGuild();
 						sender.sendMessage("Изменения сохранены");
 					} else

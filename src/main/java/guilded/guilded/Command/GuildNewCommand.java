@@ -35,7 +35,16 @@ public class GuildNewCommand {
 						// TODO: test for player in any guild and any role
 						
 						GuildSerializer.addGuild(sender.getName(), args[1], args[2], args[3]);
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "team");
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+								"team add "+sender.getName()+" {\"text\":\""+args[1]+"\"}");
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+								"team modify "+sender.getName()+" prefix [{\"text\":\"["+args[2]+"] \",\"color\":\""+args[3]+"\"}]");
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+								"team modify "+sender.getName()+" displayName [{\"text\" : \""+args[1]+",\"color\":\""+args[3]+"\"}]");
+
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+								"team join "+sender.getName()+" "+sender.getName());
+
 						sender.sendMessage("Гильдия создана");
 					} else
 						sender.sendMessage("Вы уже создали гильдию");
@@ -58,7 +67,9 @@ public class GuildNewCommand {
 			return Lists.newArrayList("<guildPrefix>");
 
 		if (args.length == 4)
-			return Lists.newArrayList("<guildColor>");
+			return Lists.newArrayList("aqua","black","blue","dark_aqua","dark_blue",
+					"dark_gray","dark_green","dark_purple","dark_red","gold","gray","green",
+					"light_purple","red","white","yellow");
 
 		return Lists.newArrayList();
 	}

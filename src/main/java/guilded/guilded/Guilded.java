@@ -28,6 +28,7 @@ public final class Guilded extends JavaPlugin {
 		log.info("Guilded Start");
 
 		// Load guilds
+
 		saveDefaultConfig();
 		GuildSerializer.LoadGuild();
 
