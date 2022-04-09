@@ -1,14 +1,8 @@
-# L10N strings for commands
-localization:
-  # All commands general messages, errors
-  general:
+localization: # L10N strings for commands
+  general: # All commands general messages, errors
     # None for now, wait until l10n update
-
-
-# Plugin settings
-settings:
-  # Plugin settings
-  general:
+settings: # Plugin settings
+  general: # General plugin settings
     # Integration with other DoubleWhale plugins (such as CoinMaterial - https://github.com/whaleopop/CoinMaterial)
     # Values: "enabled"/"disabled"
     integrateDW: "enabled"
