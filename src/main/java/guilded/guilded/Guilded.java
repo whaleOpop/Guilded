@@ -1,5 +1,6 @@
 package guilded.guilded;
 
+import doublewhaleapi.dwapi.Test;
 import guilded.guilded.Command.GuildCommand;
 import guilded.guilded.GuildSerializer.GuildSerializer;
 
@@ -25,8 +26,11 @@ public final class Guilded extends JavaPlugin {
 	public void onEnable() {
 		// Enables plugin - loads guilds from .json, initializes all commands, registers
 		// EventListeners
+
 		log.info("Guilded Start");
 
+        Test test = new Test();
+		test.Vivod();
 		// Load guilds
 
 		saveDefaultConfig();

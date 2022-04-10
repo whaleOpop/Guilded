@@ -26,6 +26,8 @@ public class GuildSerializer {
 	public static HashMap<String, GuildModel> listGuild = new HashMap<String, GuildModel>();
 	static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+
+
 	public static boolean guildExistsByCreator(String creatorName) {
 		// playerExists method - return true if guild with given name is found in listGuild HashMap
 		return listGuild.get(creatorName) != null;
@@ -47,13 +49,13 @@ public class GuildSerializer {
 		
 		server.dispatchCommand(console, "team add "    + creatorName + " {\"text\":\"" + nameGuild + "\"}");
 		server.dispatchCommand(console, "team modify " + creatorName + " prefix [{\"text\":\"[" + prefixGuild + "] \",\"color\":\"" + colorGuild + "\"}]");
-		server.dispatchCommand(console, "team modify " + creatorName + " displayName [{\"text\" : \"" + nameGuild + ",\"color\":\"" + colorGuild + "\"}]");
+		server.dispatchCommand(console, "team modify " + creatorName + " displayName [{\"text\" : \"" + nameGuild + "\",\"color\":\"" + colorGuild + "\"}]");
 		server.dispatchCommand(console, "team join "   + creatorName + " " + creatorName);
 		
 		// Save all guilds
 		SaveGuild();
 	}
-	
+
 	public static void modifyGuild(String playerName, String nameGuild, String prefixGuild, String colorGuild) {
 		// modifyGuild method - modifies settings of GuildModel of a given playerName creator,
 		// if any of arguments except playerName is null - does not changes them

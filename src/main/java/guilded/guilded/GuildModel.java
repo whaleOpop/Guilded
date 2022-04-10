@@ -19,17 +19,16 @@ public class GuildModel {
 	public String prefixGuild;
 	public String colorGuild;
 	public HashMap<String, RoleGuild> roleGuild = new HashMap<String, RoleGuild>();
-	public List<String> activePlayers = Lists.newArrayList();
+	public HashMap<String,PlayerActive> activePlayers = new HashMap<String, PlayerActive>();
 
 	public GuildModel(String nameGuild, String prefixGuild, String colorGuild, HashMap<String, RoleGuild> roleGuild) {
-		// Simple constructor
 		this.nameGuild = nameGuild;
 		this.prefixGuild = prefixGuild;
 		this.colorGuild = colorGuild;
 		this.roleGuild = roleGuild;
-		this.activePlayers = Lists.newArrayList();
+		//this.activePlayers = activePlayers;
 	}
-	
+
 	public boolean hasPlayer(String nickname) {
 		// hasPlayer method - returns true if player is in this guild
 		return roleGuild.get(nickname) != null;
