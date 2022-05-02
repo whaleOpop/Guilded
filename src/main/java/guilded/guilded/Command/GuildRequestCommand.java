@@ -1,16 +1,10 @@
 package guilded.guilded.Command;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import guilded.guilded.GuildModel;
-import guilded.guilded.GuildSerializer.GuildSerializer;
+
 import org.bukkit.command.CommandSender;
-
-import com.google.common.collect.Lists;
-import sun.awt.image.GifImageDecoder;
 
 /**
  * Implements handler for Guilded command /guild request
@@ -32,7 +26,7 @@ public class GuildRequestCommand {
 	public static List<String> complete(CommandSender sender, String[] args) {
 		// complete method - returns a list of all available commands to sender
 		// TODO: implement
-		List<String> ls = new ArrayList<String>(GuildSerializer.listGuild.keySet());
+		List<String> ls = new ArrayList<String>();
 
 
 		return ls;

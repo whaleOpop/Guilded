@@ -7,17 +7,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implements abstract Guilded command
- * Usage:        Extending this class
- * Requirements: none
+ * Abstract command class for plugin
+ *
+ * @author WhaleOpop, BlackWarlow
  */
 public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
+
+    /**
+     * Guilded plugin instance.
+     */
+    protected Guilded plugin;
+
+    /**
+     * Constructor, sets executor of command argument passed.
+     *
+     * @param command Command to bind current *Command class to
+     */
     public AbstractCommand(String command) {
         // Constructor - sets executor of CoinMaterial Command
         PluginCommand pluginCommand = Guilded.getInstance().getCommand(command);
         if (pluginCommand != null) {
             pluginCommand.setExecutor(this);
+        } else {
+            Guilded.getInstance().getLogger()
+                    .severe("Command executor for " + this.getClass().toString() + " could not be set!");
         }
+        plugin = Guilded.getInstance();
     }
 
     // Abstract execute method
@@ -59,28 +74,28 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     }
 
     public boolean isNumber(String str) {
-		// isNumber support method - tests if provided str contains number
-		if (str != null && !str.isEmpty()) {
-			for (int i = 0; i < str.length(); i++) {
-				if (!Character.isDigit(str.charAt(i))) return false;
-			}
-			return true;
-		}
-		return true;
-	}
+        // isNumber support method - tests if provided str contains number
+        if (str != null && !str.isEmpty()) {
+            for (int i = 0; i < str.length(); i++) {
+                if (!Character.isDigit(str.charAt(i))) return false;
+            }
+            return true;
+        }
+        return true;
+    }
 
     private String readConfig(String ns, String key) {
-		// readConfig method - reads value from config for given namespace and key pair 
-		return Guilded.getInstance().getConfig().getString(ns + "." + key);
-	}
-	
-	public String getLocal(String commandNS, String localize) {
-		// getLocal method - returns localized string from config.yml under 'localization' namespace
-		return readConfig("localization", commandNS + "." + localize);
-	}
-	
-	public String getSettings(String settingsType, String settingName) {
-		// getSettings method - returns settings values from config.yml under 'settings' namespace
-		return readConfig("settings", settingsType + "." + settingName);
-	}
+        // readConfig method - reads value from config for given namespace and key pair
+        return Guilded.getInstance().getConfig().getString(ns + "." + key);
+    }
+
+    public String getLocal(String commandNS, String localize) {
+        // getLocal method - returns localized string from config.yml under 'localization' namespace
+        return readConfig("localization", commandNS + "." + localize);
+    }
+
+    public String getSettings(String settingsType, String settingName) {
+        // getSettings method - returns settings values from config.yml under 'settings' namespace
+        return readConfig("settings", settingsType + "." + settingName);
+    }
 }

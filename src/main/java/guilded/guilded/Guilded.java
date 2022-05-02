@@ -1,83 +1,107 @@
 package guilded.guilded;
 
-import doublewhaleapi.dwapi.Test;
+import doublewhaleapi.dwapi.DWAPI;
 import guilded.guilded.Command.GuildCommand;
-import guilded.guilded.GuildSerializer.GuildSerializer;
 
-import java.io.File;
+
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Implements abstract Guilded command
- * Usage:        import guilded.guilded package
- * Requirements: Bukkit, Gson
+ * Guilded Bukkit Plugin
+ *
+ * @author WhaleOpop, BlackWarlow
  */
 public final class Guilded extends JavaPlugin {
+    /**
+     * Singleton implementation.
+     */
+    private static Guilded instance;
+    private PluginManager pluginManager = Bukkit.getPluginManager();
+    /**
+     * Plugin logger.
+     */
+    public Logger logger = getLogger();
 
-	private static Guilded instance;
+    /**
+     * Public available DWAPI core and integration settings.
+     */
+    public DWAPI core;
+    public static Boolean coinmaterialinstalled = false;
 
-	public static Boolean coinmaterialinstalled = false;
-	public Logger log = getLogger();
+    /**
+     * Enables plugin - finds DWAPI core, reloads config file, initializes all
+     * Commands, registers EventListener
+     */
+    @Override
+    public void onEnable() {
+        // Singleton
+        instance = this;
 
-	@Override
-	public void onEnable() {
-		// Enables plugin - loads guilds from .json, initializes all commands, registers
-		// EventListeners
+        logger.info("Guilded Start");
 
-		log.info("Guilded Start");
+        // Get DWAPI core
+        Plugin loadCore = Bukkit.getPluginManager().getPlugin("DWAPI");
+        if (loadCore == null) {
+            logger.severe("CoinMaterial requires DWAPI core plugin to work, please install it!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
-        Test test = new Test();
-		test.Vivod();
-		// Load guilds
+        if (pluginManager.isPluginEnabled("DWAPI")) {
+            logger.info("DWAPI core was successfuly loaded.");
+            core = (DWAPI) pluginManager.getPlugin("DWAPI");
+        } else {
+            logger.severe("CoinMaterial requires DWAPI core plugin to work, please install it!");
+            pluginManager.disablePlugin(this);
+            return;
+        }
+		// Save config file
+        saveDefaultConfig();
+        core.coinPath.deserialize();
+        core.coinPath.deserialize();
 
-		saveDefaultConfig();
-		GuildSerializer.LoadGuild();
 
-		// Seamless integrations with plugins
-		if (getConfig().getString("settings.general.integrateDW").equalsIgnoreCase("enabled")) {
-			for (final File fileEntry : new File("plugins/").listFiles()) {
-				if (!fileEntry.isDirectory()) {
-					String fileName = fileEntry.getName().toLowerCase();
-					if (fileName.contains("coinmaterial") && fileName.endsWith(".jar")) {
-						coinmaterialinstalled = true;
-						break;
-					}
-				}
-			}
+        // Seamless integrations with plugins
+        if (getConfig().getString("settings.general.integrateDW").equalsIgnoreCase("enabled")) {
+            coinmaterialinstalled=core.getAddonEnabled("Guilded");
 
-			// Notify server admin in console
-			if (coinmaterialinstalled) {
-				log.info("DoubleWhale CoinMaterial plugin is found. DW Plugin Integration is active.");
-			} else {
-				log.info("Check out our other DoubleWhale plugin 'CoinMaterial' at https://github.com/whaleopop/CoinMaterial");
-				log.info("If you see this and have CoinMaterial plugin and integrateDW enabled in config.yml, reffer to https://github.com/whaleOpop/Guilded README.md under Any DoubleWhale plugin integration");
-			}
-		} else {
-			log.info("integrateDW is disabled in config.yml, skipping integrations.");
-			coinmaterialinstalled = false;
-		}
+            // Notify server admin in console
+            if (coinmaterialinstalled) {
+                logger.info("DoubleWhale Guilded plugin is found. DW Plugin Integration is active.");
+            } else {
+				logger.info("Check out our other DoubleWhale plugin 'CoinMaterial' at https://github.com/whaleopop/CoinMaterial");
+				logger.info("If you see this and have CoinMaterial plugin and integrateDW enabled in config.yml, reffer to https://github.com/whaleOpop/Guilded README.md under Any DoubleWhale plugin integration");
+            }
+        } else {
+			logger.info("integrateDW is disabled in config.yml, skipping integrations.");
+        }
 
-		// Singleton
-		instance = this;
 
-		// Register command
-		new GuildCommand();
+        // Register command
+        new GuildCommand();
 
-		// Register EventListener
-		Bukkit.getPluginManager().registerEvents(new EventListener(), this);
-	}
-
-	public static Guilded getInstance() {
-		// Simple Singleton implementation
-		return instance;
-	}
-
-	@Override
-	public void onDisable() {
-		// Disables plugin - saves guilds to .json file
-		GuildSerializer.SaveGuild();
-	}
+        // Register EventListener
+        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
+    }
+	/**
+	 * Singleton implementation.
+	 *
+	 * @return CoinMaterial Plugin instance
+	 */
+    public static Guilded getInstance() {
+        // Simple Singleton implementation
+        return instance;
+    }
+	/**
+	 * Handles plugin shutdown:<br>
+	 * Saves guildStorage data to .json file.
+	 */
+    @Override
+    public void onDisable() {
+    }
 }

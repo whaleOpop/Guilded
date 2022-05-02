@@ -5,6 +5,7 @@ authors: [whaleOpop, TheBrushCoder]
 website: https://github.com/whaleOpop/Guilded
 main: guilded.guilded.Guilded
 api-version: 1.13
+depend: [DWAPI]
 commands:
   guild:
     description: Помощь по командам Guilded

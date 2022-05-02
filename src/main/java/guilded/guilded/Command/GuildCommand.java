@@ -37,6 +37,12 @@ public class GuildCommand extends AbstractCommand {
             GuildNewCommand.execute(sender, args);
             return;
 
+        } else if (args[0].equals("list")) {
+            // Guild new command execute
+            GuildListCommand.execute(sender, args);
+            return;
+
+
         } else if (args[0].equals("modify")) {
             // Guild modify command execute
             GuildModifyCommand.execute(sender, args);
@@ -50,6 +56,10 @@ public class GuildCommand extends AbstractCommand {
             // Guild delete command execute
             GuildRoleCommand.execute(sender, args);
             return;
+        } else if (args[0].equals("add")) {
+            // Guild delete command execute
+            GuildAddCommand.execute(sender, args);
+            return;
 
         } else
             sender.sendMessage("Неизвестная команда, введите /guild help!");
@@ -61,18 +71,22 @@ public class GuildCommand extends AbstractCommand {
 
         // guild [subcommand] - presumably empty or help
         if (args.length == 1)
-            return Lists.newArrayList("help", "new", "request", "delete", "op");
+            return Lists.newArrayList("help", "new", "request", "delete", "op", "add","list");
 
 
-        if (args[0].equalsIgnoreCase("help"))
-            return GuildHelpCommand.complete(sender, args);
 
         // guild [subcommand] {arguments...}
         if (args.length >= 2) {
+
+            // Complete /guild help command
+            if (args[0].equalsIgnoreCase("help"))
+                return GuildHelpCommand.complete(sender, args);
             // Complete /guild op command
             if (args[0].equalsIgnoreCase("op"))
                 return GuildRoleCommand.complete(sender, args);
-
+            // Complete /guild list command
+            if (args[0].equalsIgnoreCase("list"))
+                return GuildListCommand.complete(sender, args);
             // Complete /guild new command
             if (args[0].equalsIgnoreCase("new"))
                 return GuildNewCommand.complete(sender, args);
@@ -88,6 +102,9 @@ public class GuildCommand extends AbstractCommand {
             // Complete /guild request command
             if (args[0].equalsIgnoreCase("request"))
                 return GuildRequestCommand.complete(sender, args);
+
+            if (args[0].equalsIgnoreCase("add"))
+                return GuildAddCommand.complete(sender, args);
 
         }
 
